@@ -55,6 +55,26 @@
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'PhysicsDebug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\PhysicsDebug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;WINDOWS;MONOGAME;WINDOWSDX;PHYSICS</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'PhysicsDebug|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\PhysicsDebug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;WINDOWS;MONOGAME</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="BitMiracle.LibTiff.NET">
       <HintPath>external lib\BitMiracle.LibTiff.NET.dll</HintPath>
@@ -103,6 +123,19 @@
     <Compile Include="events\CCEventCustom.cs" />
     <Compile Include="events\CCEventListenerCustom.cs" />
     <Compile Include="label_nodes\CCLabel-Windows.cs" />
+    <Compile Include="physics\CCPhysicsBody.cs" />
+    <Compile Include="physics\CCPhysicsContact.cs" />
+    <Compile Include="physics\CCPhysicsJoint.cs" />
+    <Compile Include="physics\CCPhysicsShape.cs" />
+    <Compile Include="physics\CCPhysicsWorld.cs" />
+    <Compile Include="physics\chipmunk\CCPhysicsBodyInfo.cs" />
+    <Compile Include="physics\chipmunk\CCPhysicsContactInfo.cs" />
+    <Compile Include="physics\chipmunk\CCPhysicsJointInfo.cs" />
+    <Compile Include="physics\chipmunk\CCPhysicsShapeInfo.cs" />
+    <Compile Include="physics\chipmunk\CCPhysicsWorldInfo.cs" />
+    <Compile Include="physics\chipmunk\PhysicsHelper.cs" />
+    <Compile Include="physics\extensions\CCPhysicsDebugNode .cs" />
+    <Compile Include="physics\extensions\cpExtension.cs" />
     <Compile Include="platform\CCArrayPool.cs" />
     <Compile Include="sprite_nodes\CCMaskedSprite.cs" />
     <Compile Include="actions\action\CCAction.cs" />
