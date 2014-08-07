@@ -58,7 +58,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'PhysicsDebug|x86'">
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>bin\x86\PhysicsDebug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;WINDOWS;MONOGAME;WINDOWSDX;PHYSICS</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;WINDOWS;MONOGAME;WINDOWSDX;USE_PHYSICS</DefineConstants>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <DebugType>full</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>

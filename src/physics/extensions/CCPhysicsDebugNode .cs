@@ -91,7 +91,7 @@ namespace ChipmunkSharp
 			return pPoints;
 		}
 
-#if PHYSICS
+#if USE_PHYSICS
 		CCPhysicsWorld _world;
 #endif
 		cpSpace _space;
@@ -101,7 +101,7 @@ namespace ChipmunkSharp
 
 
 
-#if PHYSICS
+#if USE_PHYSICS
 
 		public PhysicsDebugDraw(CCPhysicsWorld world)
 		{
@@ -551,7 +551,7 @@ namespace ChipmunkSharp
 
 		#endregion
 
-#if PHYSICS
+#if USE_PHYSICS
 
 		#region DRAW PHYSICS
 		public void DrawShape(CCPhysicsShape shape)

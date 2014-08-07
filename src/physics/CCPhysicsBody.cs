@@ -52,30 +52,30 @@ namespace CocosSharp
 		protected List<CCPhysicsShape> _shapes = new List<CCPhysicsShape>();
 		public CCPhysicsWorld _world;
 		public CCPhysicsBodyInfo _info;
-		protected bool _dynamic;
-		protected bool _enabled;
-		protected bool _rotationEnabled;
-		protected bool _gravityEnabled;
-		protected bool _massDefault;
-		protected bool _momentDefault;
-		protected float _mass;
-		protected float _area;
-		protected float _density;
-		protected float _moment;
-		protected bool _isDamping;
-		protected float _linearDamping;
-		protected float _angularDamping;
-		protected int _tag;
+		internal bool _dynamic;
+		internal bool _enabled;
+		internal bool _rotationEnabled;
+		internal bool _gravityEnabled;
+		internal bool _massDefault;
+		internal bool _momentDefault;
+		internal float _mass;
+		internal float _area;
+		internal float _density;
+		internal float _moment;
+		internal bool _isDamping;
+		internal float _linearDamping;
+		internal float _angularDamping;
+		internal int _tag;
 
-		protected int _categoryBitmask;
-		protected int _collisionBitmask;
-		protected int _contactTestBitmask;
-		protected int _group;
+		internal int _categoryBitmask;
+		internal int _collisionBitmask;
+		internal int _contactTestBitmask;
+		internal int _group;
 
-		protected bool _positionResetTag;     /// To avoid reset the body position when body invoke Node::setPosition().
-		protected bool _rotationResetTag;     /// To avoid reset the body rotation when body invoke Node::setRotation().
-		protected cpVect _positionOffset;
-		protected float _rotationOffset;
+		internal bool _positionResetTag;     /// To avoid reset the body position when body invoke Node::setPosition().
+		internal bool _rotationResetTag;     /// To avoid reset the body rotation when body invoke Node::setRotation().
+		internal cpVect _positionOffset;
+		internal float _rotationOffset;
 
 
 		#endregion
@@ -997,6 +997,37 @@ namespace CocosSharp
 
 		#endregion
 
+
+		public void SetScale(float scale)
+		{
+			foreach (var shape in _shapes)
+			{
+				shape.SetScale(scale);
+			}
+		}
+
+		public void SetScale(float scaleX, float scaleY)
+		{
+			foreach (var shape in _shapes)
+			{
+				shape.SetScale(scaleX, scaleY);
+			}
+		}
+
+		public void SetScaleX(float scaleX)
+		{
+			foreach (var shape in _shapes)
+			{
+				shape.SetScaleX(scaleX);
+			}
+		}
+		public void SetScaleY(float scaleY)
+		{
+			foreach (var shape in _shapes)
+			{
+				shape.SetScaleY(scaleY);
+			}
+		}
 
 
 	}

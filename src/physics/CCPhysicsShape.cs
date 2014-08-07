@@ -77,6 +77,13 @@ namespace CocosSharp
 		protected float _area;
 		protected float _mass;
 		protected float _moment;
+
+		protected float _scaleX;
+		protected float _scaleY;
+		protected float _newScaleX;
+		protected float _newScaleY;
+		protected bool _dirty;
+
 		protected CCPhysicsMaterial _material;
 		protected int _tag;
 		protected int _categoryBitmask;
@@ -111,6 +118,7 @@ namespace CocosSharp
 			_info = new CCPhysicsShapeInfo(this);
 			_type = type;
 
+			_dirty = false;
 
 		}
 
@@ -127,6 +135,16 @@ namespace CocosSharp
 		//	return true;
 		//}
 
+
+		public virtual void Update()
+		{
+			if (_dirty)
+			{
+				_scaleX = _newScaleX;
+				_scaleY = _newScaleY;
+				_dirty = false;
+			}
+		}
 
 		public CCPhysicsShape(float radius, CCPhysicsMaterial material, cpVect offset)
 		{
@@ -354,6 +372,41 @@ namespace CocosSharp
 		{
 			_group = group;
 		}
+
+		internal void SetScale(float scale)
+		{
+			SetScaleX(scale);
+			SetScaleY(scale);
+		}
+
+		internal void SetScale(float scaleX, float scaleY)
+		{
+			SetScaleX(scaleX);
+			SetScaleY(scaleY);
+		}
+		internal void SetScaleY(float scaleY)
+		{
+			if (_scaleY == scaleY)
+			{
+				return;
+			}
+
+			_newScaleY = scaleY;
+			_dirty = true;
+		}
+
+		internal void SetScaleX(float scaleX)
+		{
+			if (_scaleX == scaleX)
+			{
+				return;
+			}
+
+			_newScaleX = scaleX;
+			_dirty = true;
+		}
+
+
 	}
 
 	/** A circle shape */
@@ -408,25 +461,42 @@ namespace CocosSharp
 
 		public override float CalculateDefaultMoment()
 		{
-			cpShape shape = _info.getShapes().FirstOrDefault(); //  //->getShapes().front();
+			cpShape shape = _info.getShapes().FirstOrDefault();
 
 			return _mass == cp.Infinity ? cp.Infinity
 			: cp.MomentForCircle(_mass, 0,
 			(shape as cpCircleShape).GetRadius(),
 			(shape as cpCircleShape).GetOffset()
-														  );
+			);
 
+		}
+
+		public override void Update()
+		{
+
+			if (_dirty)
+			{
+				float factor = cp.cpfabs(_newScaleX / _scaleX);
+
+				cpCircleShape shape = (cpCircleShape)_info.getShapes().FirstOrDefault();//->getShapes().front();
+				cpVect v = GetOffset();// cpCircleShapeGetOffset();
+				v = cpVect.cpvmult(v, factor);
+				shape.c = v;
+
+				shape.SetRadius(shape.GetRadius() * factor);
+			}
+
+
+			base.Update();
 		}
 
 		public float GetRadius()
 		{
 			return (_info.getShapes().FirstOrDefault() as cpCircleShape).GetRadius();
-			//  return cpShape.cpCircleShapeGetRadius();
 		}
 		public override cpVect GetOffset()
 		{
 			return (_info.getShapes().FirstOrDefault() as cpCircleShape).GetOffset();
-			//return cpShape.cpCircleShapeGetOffset(_info.getShapes().FirstOrDefault());
 		}
 
 		#endregion
