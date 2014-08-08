@@ -231,11 +231,11 @@ namespace CocosSharp
 	public class CCPhysicsWorld
 	{
 
-		const int DEBUGDRAW_NONE = 0x00;        ///< draw nothing
-		const int DEBUGDRAW_SHAPE = 0x01;       ///< draw shapes
-		const int DEBUGDRAW_JOINT = 0x02;
-		const int DEBUGDRAW_CONTACT = 0x04;
-		const int DEBUGDRAW_ALL = DEBUGDRAW_SHAPE | DEBUGDRAW_JOINT | DEBUGDRAW_CONTACT;
+		public const int DEBUGDRAW_NONE = 0x00;        ///< draw nothing
+		public const int DEBUGDRAW_SHAPE = 0x01;       ///< draw shapes
+		public const int DEBUGDRAW_JOINT = 0x02;
+		public const int DEBUGDRAW_CONTACT = 0x04;
+		public const int DEBUGDRAW_ALL = DEBUGDRAW_SHAPE | DEBUGDRAW_JOINT | DEBUGDRAW_CONTACT;
 
 
 		public string DEFAULT_FONT = "fonts/MarkerFelt-22";
@@ -256,7 +256,7 @@ namespace CocosSharp
 		protected CCScene _scene;
 
 		protected bool _delayDirty;
-		PhysicsDebugDraw _debugDraw;
+		public PhysicsDebugDraw _debugDraw;
 		int _debugDrawMask;
 
 
@@ -279,10 +279,7 @@ namespace CocosSharp
 			_scene = null;
 			_delayDirty = false;
 
-			//_debugDraw = new CCChipmunkDebugDraw(DEFAULT_FONT);
-
 			_info = new CCPhysicsWorldInfo();
-			//_info.SetDebugDraw(_debugDraw);
 
 			_scene = scene;
 
@@ -291,7 +288,6 @@ namespace CocosSharp
 			var spc = _info.getSpace();
 
 			spc.defaultHandler = new cpCollisionHandler()
-
 			{
 				beginFunc = (a, s, o) => CCPhysicsWorldCallback.CollisionBeginCallbackFunc(a as cpArbiter, s, this),
 				preSolveFunc = (a, s, o) => CCPhysicsWorldCallback.CollisionPreSolveCallbackFunc(a as cpArbiter, s, this),
@@ -299,16 +295,29 @@ namespace CocosSharp
 				separateFunc = (a, s, o) => CCPhysicsWorldCallback.CollisionSeparateCallbackFunc(a as cpArbiter, s, this)
 			};
 
-
 		}
 
+#if USE_PHYSICS
 
 		public void DebugDraw()
 		{
+
 			if (_debugDraw == null)
 			{
+
 				_debugDraw = new PhysicsDebugDraw(this);
+
+				_debugDraw.Flags = PhysicsDrawFlags.All;
 			}
+
+			//var space = this._info.getSpace();
+			//_debugDraw.Begin();
+			//space.EachShape(shape =>
+			//{
+			//	_debugDraw.DrawShape(shape);
+			//});
+			//_debugDraw.End();
+			//return;
 
 			if (_debugDraw != null && _bodies.Count > 0)
 			{
@@ -344,6 +353,8 @@ namespace CocosSharp
 				}
 			}
 		}
+
+#endif
 
 
 		~CCPhysicsWorld()
@@ -783,8 +794,8 @@ namespace CocosSharp
 
 			CCPhysicsShape shapeA = contact.GetShapeA();
 			CCPhysicsShape shapeB = contact.GetShapeB();
-			CCPhysicsBody bodyA = shapeA.getBody();
-			CCPhysicsBody bodyB = shapeB.getBody();
+			CCPhysicsBody bodyA = shapeA.GetBody();
+			CCPhysicsBody bodyB = shapeB.GetBody();
 			List<CCPhysicsJoint> jointsA = bodyA.GetJoints();
 
 			// check the joint is collision enable or not
@@ -807,20 +818,20 @@ namespace CocosSharp
 			}
 
 			// bitmask check
-			if ((shapeA.getCategoryBitmask() & shapeB.getContactTestBitmask()) == 0
-				|| (shapeA.getContactTestBitmask() & shapeB.getCategoryBitmask()) == 0)
+			if ((shapeA.GetCategoryBitmask() & shapeB.GetContactTestBitmask()) == 0
+				|| (shapeA.GetContactTestBitmask() & shapeB.GetCategoryBitmask()) == 0)
 			{
 				contact.SetNotificationEnable(false);
 			}
 
-			if (shapeA.getGroup() != 0 && shapeA.getGroup() == shapeB.getGroup())
+			if (shapeA.GetGroup() != 0 && shapeA.GetGroup() == shapeB.GetGroup())
 			{
-				ret = shapeA.getGroup() > 0;
+				ret = shapeA.GetGroup() > 0;
 			}
 			else
 			{
-				if ((shapeA.getCategoryBitmask() & shapeB.getCollisionBitmask()) == 0
-					|| (shapeB.getCategoryBitmask() & shapeA.getCollisionBitmask()) == 0)
+				if ((shapeA.GetCategoryBitmask() & shapeB.GetCollisionBitmask()) == 0
+					|| (shapeB.GetCategoryBitmask() & shapeA.GetCollisionBitmask()) == 0)
 				{
 					ret = false;
 				}
@@ -1096,6 +1107,11 @@ namespace CocosSharp
 
 		#endregion
 
+
+		public void SetDebugDrawMask(int mask)
+		{
+			_debugDrawMask = mask;
+		}
 	}
 
 	//public class PhysicsDebugDraw

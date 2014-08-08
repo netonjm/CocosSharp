@@ -934,19 +934,19 @@ namespace CocosSharp
 
 		void UpdatePhysicsBodyPosition(CCScene scene)
 		{
-			if (physicsBody != null)
+			if (_physicsBody != null)
 			{
-				physicsBody.Position = new cpVect(PositionX, PositionY);
+				//_physicsBody.Position = new cpVect(PositionX, PositionY);
 
-				//if (scene != null && scene.PhysicsWorld != null)
-				//{
-				//	//var pos = new  Position; //Parent == scene ? Position : scene.ConvertToNodeSpace(Parent.ConvertToWorldSpace(Position));
-				//	physicsBody.Position = new cpVect(PositionX, PositionY);
-				//}
-				//else
-				//{
-				//	physicsBody.Position = Position;
-				//}
+				if (scene != null && scene.PhysicsWorld != null)
+				{
+					var pos = Parent == scene ? Position : scene.WorldToParentspace(Position);
+					_physicsBody.Position = new cpVect(PositionX, PositionY);
+				}
+				else
+				{
+					_physicsBody.Position = Position.ToCpVect();
+				}
 			}
 
 			if (Children != null)
@@ -1008,25 +1008,29 @@ namespace CocosSharp
 				}
 			}
 
-			foreach (var child in Children)
+			if (Children != null)
 			{
-				child.UpdatePhysicsBodyRotation(scene);
-				child.UpdatePhysicsBodyPosition(scene);
+				foreach (var child in Children)
+				{
+					child.UpdatePhysicsBodyRotation(scene);
+					child.UpdatePhysicsBodyPosition(scene);
+				}
+
 			}
 
 
 		}
 
 		/** *   set the PhysicsBody that let the sprite effect with physics * @note This method will set anchor point to Vec2::ANCHOR_MIDDLE if body not null, and you cann't change anchor point if node has a physics body. */
-		private CCPhysicsBody physicsBody;
+
 		public CCPhysicsBody PhysicsBody
 		{
-			get { return physicsBody; }
+			get { return _physicsBody; }
 			set
 			{
 
 				var body = value;
-				if (physicsBody == body)
+				if (_physicsBody == body)
 				{
 					return;
 				}
@@ -1050,11 +1054,11 @@ namespace CocosSharp
 					}
 				}
 
-				if (physicsBody != null)
+				if (_physicsBody != null)
 				{
-					var world = physicsBody.GetWorld();
-					physicsBody.RemoveFromWorld();
-					physicsBody._node = null;
+					var world = _physicsBody.GetWorld();
+					_physicsBody.RemoveFromWorld();
+					_physicsBody._node = null;
 					//_physicsBody->release();
 
 					if (world != null && body != null)
@@ -1063,9 +1067,9 @@ namespace CocosSharp
 					}
 				}
 
-				physicsBody = body;
-				//physicsScaleStartX = _scaleX;
-				//physicsScaleStartY = _scaleY;
+				_physicsBody = body;
+				_physicsScaleStartX = scaleX;
+				_physicsScaleStartY = scaleY;
 
 				if (body != null)
 				{
@@ -1089,7 +1093,6 @@ namespace CocosSharp
 					UpdatePhysicsBodyTransform(scene);
 				}
 
-				physicsBody = value;
 
 			}
 		}
@@ -1168,7 +1171,7 @@ namespace CocosSharp
 		~CCNode()
 		{
 #if USE_PHYSICS
-			this.physicsBody = null;
+			this._physicsBody = null;
 #endif
 			this.Dispose(false);
 		}
@@ -1413,10 +1416,10 @@ namespace CocosSharp
 
 #if USE_PHYSICS
 			// Recursive add children with which have physics body.
-			if (Scene != null && scene.PhysicsWorld != null)
+			if (Scene != null && Scene.PhysicsWorld != null)
 			{
-				child.UpdatePhysicsBodyTransform(scene);
-				scene.AddChildToPhysicsWorld(child);
+				child.UpdatePhysicsBodyTransform(Scene);
+				Scene.AddChildToPhysicsWorld(child);
 			}
 #endif
 

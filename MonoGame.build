@@ -71,13 +71,17 @@
   <target name="build" description="Build MonoGame Release" depends="checkos">
 
     <call target="buildwindows"/>
+	<call target="buildwindowsphone" />
+	<!--
     <call target="buildlinux"/>
     <call target="buildandroid" />
     <call target="buildwindows8" />
-    <call target="buildwindowsphone" />
-    <call target="buildmac" />
+	 <call target="buildmac" />
     <call target="buildios" />
     <call target="buildpsm" />
+	-->
+ 
+   
 
     <call target="buildtools"/>
     <call target="buildcontentprocessor"/>

@@ -77,6 +77,17 @@ namespace CocosSharp
 		#endregion Constructors
 	}
 
+	public class GameLayer
+	{
+
+		public GameLayer(CCSize size)
+		{
+
+		}
+
+
+	}
+
 	public class CCGame : Game
 	{
 
@@ -89,26 +100,26 @@ namespace CocosSharp
 #endif
 
 #if WINDOWS || WINDOWSGL || MACOS
-            this.IsMouseVisible = true;
+			this.IsMouseVisible = true;
 #endif
 		}
 
-        /// <summary>
-        /// Allows the game to perform any initialization it needs to before starting to run.
-        /// This is where it can query for any required services and load any non-graphic
-        /// related content.  Calling base.Initialize will enumerate through any components
-        /// and initialize them as well.
-        /// </summary>
-        protected override void Initialize()
-        {
-            // TODO: Add your initialization logic here
+		/// <summary>
+		/// Allows the game to perform any initialization it needs to before starting to run.
+		/// This is where it can query for any required services and load any non-graphic
+		/// related content.  Calling base.Initialize will enumerate through any components
+		/// and initialize them as well.
+		/// </summary>
+		protected override void Initialize()
+		{
+			// TODO: Add your initialization logic here
 
-            base.Initialize();
-        }
+			base.Initialize();
+		}
 
-        protected override void Draw(GameTime gameTime)
-        {
-            base.Draw(gameTime);
+		protected override void Draw(GameTime gameTime)
+		{
+			base.Draw(gameTime);
 #if OUYA
 
 			// We will comment this out until Director and DrawManager are sorted out.
@@ -130,7 +141,7 @@ namespace CocosSharp
 //            Director.DrawManager.SpriteBatch.End();
 #endif
 
-        }
+		}
 
 		protected override void Update(GameTime gameTime)
 		{
@@ -138,8 +149,8 @@ namespace CocosSharp
 
 			// Allows the game to exit
 #if (WINDOWS && !WINRT) || WINDOWSGL || WINDOWSDX || MACOS
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
-                Exit();
+			if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
+				Exit();
 #endif
 		}
 	}
@@ -174,9 +185,9 @@ namespace CocosSharp
 		float deltaTime;
 
 #if WINDOWS || WINDOWSGL || MACOS || WINDOWSGL
-        int lastMouseId;
-        MouseState lastMouseState;
-        MouseState prevMouseState;
+		int lastMouseId;
+		MouseState lastMouseState;
+		MouseState prevMouseState;
 #endif
 
 		MouseState priorMouseState;
@@ -391,7 +402,7 @@ namespace CocosSharp
 
 			gameWindows = new List<CCWindow>();
 
-			InitializeMainWindow((mainWindowSizeInPixels.HasValue) ? mainWindowSizeInPixels.Value : CCSize.Zero, 
+			InitializeMainWindow((mainWindowSizeInPixels.HasValue) ? mainWindowSizeInPixels.Value : CCSize.Zero,
 				isFullScreen, supportedOrientations);
 		}
 
@@ -456,7 +467,7 @@ namespace CocosSharp
 			if (xnaGame != null)
 			{
 #if !NETFX_CORE
-                xnaGame.Run();
+				xnaGame.Run();
 #endif
 			}
 
@@ -469,7 +480,7 @@ namespace CocosSharp
 				window.EndAllSceneDirectors();
 			}
 #if (WINDOWS && !WINRT) || WINDOWSGL || WINDOWSDX || MACOS
-            xnaGame.Exit();
+			xnaGame.Exit();
 #endif
 		}
 
@@ -555,7 +566,7 @@ namespace CocosSharp
 				base.LoadContent();
 
 				if (ApplicationDelegate != null)
-                    ApplicationDelegate.ApplicationDidFinishLaunching(this, this.MainWindow);
+					ApplicationDelegate.ApplicationDidFinishLaunching(this, this.MainWindow);
 
 				initialized = true;
 			}
@@ -580,15 +591,15 @@ namespace CocosSharp
 			GameTime.TotalGameTime = gameTime.TotalGameTime;
 
 #if !NETFX_CORE
-            foreach(CCWindow window in gameWindows)
-            {
-                if (window.Accelerometer != null 
-                    && window.Accelerometer.Enabled
-                    && window.EventDispatcher.IsEventListenersFor(CCEventListenerAccelerometer.LISTENER_ID))
-                {
-                    window.Accelerometer.Update();
-                }
-            }
+			foreach (CCWindow window in gameWindows)
+			{
+				if (window.Accelerometer != null
+					&& window.Accelerometer.Enabled
+					&& window.EventDispatcher.IsEventListenersFor(CCEventListenerAccelerometer.LISTENER_ID))
+				{
+					window.Accelerometer.Update();
+				}
+			}
 
 #endif
 
@@ -972,8 +983,8 @@ namespace CocosSharp
 			//Because MonoGame and CocosSharp uses different Y axis, we need to convert the coordinate here
 			pos = TransformPoint(priorMouseState.X, Game.Window.ClientBounds.Height - priorMouseState.Y);
 #else
-            //Because MonoGame and CocosSharp uses different Y axis, we need to convert the coordinate here
-            pos = new CCPoint(priorMouseState.X, Game.Window.ClientBounds.Height - priorMouseState.Y);
+			//Because MonoGame and CocosSharp uses different Y axis, we need to convert the coordinate here
+			pos = new CCPoint(priorMouseState.X, Game.Window.ClientBounds.Height - priorMouseState.Y);
 #endif
 
 
@@ -1081,37 +1092,37 @@ namespace CocosSharp
 				// TODO: allow configuration to treat the game pad as a touch device.
 
 #if WINDOWS || WINDOWSGL || MACOS
-                pos = new CCPoint(lastMouseState.X, lastMouseState.Y);
-                prevMouseState = lastMouseState;
-                lastMouseState = Mouse.GetState();
+				pos = new CCPoint(lastMouseState.X, lastMouseState.Y);
+				prevMouseState = lastMouseState;
+				lastMouseState = Mouse.GetState();
 
-                if (prevMouseState.LeftButton == ButtonState.Released && lastMouseState.LeftButton == ButtonState.Pressed)
-                {
-                    lastMouseId++;
-                    touches.AddLast(new CCTouch(lastMouseId, pos.X, pos.Y));
-                    touchMap.Add(lastMouseId, touches.Last);
-                    newTouches.Add(touches.Last.Value);
-                }
-                else if (prevMouseState.LeftButton == ButtonState.Pressed && lastMouseState.LeftButton == ButtonState.Pressed)
-                {
-                    if (touchMap.ContainsKey(lastMouseId))
-                    {
-                        if (prevMouseState.X != lastMouseState.X || prevMouseState.Y != lastMouseState.Y)
-                        {
-                            movedTouches.Add(touchMap[lastMouseId].Value);
-                            touchMap[lastMouseId].Value.SetTouchInfo(lastMouseId, pos.X, pos.Y);
-                        }
-                    }
-                }
-                else if (prevMouseState.LeftButton == ButtonState.Pressed && lastMouseState.LeftButton == ButtonState.Released)
-                {
-                    if (touchMap.ContainsKey(lastMouseId))
-                    {
-                        endedTouches.Add(touchMap[lastMouseId].Value);
-                        touches.Remove(touchMap[lastMouseId]);
-                        touchMap.Remove(lastMouseId);
-                    }
-                }
+				if (prevMouseState.LeftButton == ButtonState.Released && lastMouseState.LeftButton == ButtonState.Pressed)
+				{
+					lastMouseId++;
+					touches.AddLast(new CCTouch(lastMouseId, pos.X, pos.Y));
+					touchMap.Add(lastMouseId, touches.Last);
+					newTouches.Add(touches.Last.Value);
+				}
+				else if (prevMouseState.LeftButton == ButtonState.Pressed && lastMouseState.LeftButton == ButtonState.Pressed)
+				{
+					if (touchMap.ContainsKey(lastMouseId))
+					{
+						if (prevMouseState.X != lastMouseState.X || prevMouseState.Y != lastMouseState.Y)
+						{
+							movedTouches.Add(touchMap[lastMouseId].Value);
+							touchMap[lastMouseId].Value.SetTouchInfo(lastMouseId, pos.X, pos.Y);
+						}
+					}
+				}
+				else if (prevMouseState.LeftButton == ButtonState.Pressed && lastMouseState.LeftButton == ButtonState.Released)
+				{
+					if (touchMap.ContainsKey(lastMouseId))
+					{
+						endedTouches.Add(touchMap[lastMouseId].Value);
+						touches.Remove(touchMap[lastMouseId]);
+						touchMap.Remove(lastMouseId);
+					}
+				}
 #endif
 
 				TouchCollection touchCollection = TouchPanel.GetState();

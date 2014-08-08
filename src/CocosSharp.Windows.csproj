@@ -61,6 +61,32 @@
     <XnaCompressContent>false</XnaCompressContent>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'PhysicsDebug|x86' ">
+    <OutputPath>bin\PhysicsWindows\Debug\</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <DefineConstants>TRACE;DEBUG;WINDOWS;XNA;USE_PHYSICS</DefineConstants>
+    <PlatformTarget>x86</PlatformTarget>
+    <XnaCompressContent>false</XnaCompressContent>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'PhysicsRelease|x86'">
+    <OutputPath>bin\PhysicsWindows\Release</OutputPath>
+    <DefineConstants>TRACE;WINDOWS;XNA;USE_PHYSICS</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Optimize>true</Optimize>
+    <NoStdLib>true</NoStdLib>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
   <ItemGroup>
     <Compile Include="actions\action\CCAction.cs" />
     <Compile Include="actions\action\CCFiniteTimeAction.cs" />
@@ -198,6 +224,19 @@
     <Compile Include="label_nodes\CCLabel.cs" />
     <Compile Include="misc_nodes\CCClippingNode.cs" />
     <Compile Include="misc_nodes\CCDrawNode.cs" />
+    <Compile Include="physics\CCPhysicsBody.cs" />
+    <Compile Include="physics\CCPhysicsContact.cs" />
+    <Compile Include="physics\CCPhysicsJoint.cs" />
+    <Compile Include="physics\CCPhysicsShape.cs" />
+    <Compile Include="physics\CCPhysicsWorld.cs" />
+    <Compile Include="physics\chipmunk\CCPhysicsBodyInfo.cs" />
+    <Compile Include="physics\chipmunk\CCPhysicsContactInfo.cs" />
+    <Compile Include="physics\chipmunk\CCPhysicsJointInfo.cs" />
+    <Compile Include="physics\chipmunk\CCPhysicsShapeInfo.cs" />
+    <Compile Include="physics\chipmunk\CCPhysicsWorldInfo.cs" />
+    <Compile Include="physics\chipmunk\PhysicsHelper.cs" />
+    <Compile Include="physics\extensions\CCPhysicsDebugNode .cs" />
+    <Compile Include="physics\extensions\cpExtension.cs" />
     <Compile Include="platform\CCContentManager.cs" />
     <Compile Include="platform\CCFocusManager.cs" />
     <Compile Include="platform\CCTask.cs" />
@@ -417,6 +456,10 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\ChipmunkSharp\src\ChipmunkSharp\win32\ChipmunkSharp.Win32.csproj">
+      <Project>{fd50437f-b756-4bd8-99be-b723f6e1eb45}</Project>
+      <Name>ChipmunkSharp.Win32</Name>
+    </ProjectReference>
     <ProjectReference Include="..\box2d\box2d.csproj">
       <Project>{B81B6701-7A78-4846-BF6F-04E0591F0F38}</Project>
       <Name>box2d</Name>

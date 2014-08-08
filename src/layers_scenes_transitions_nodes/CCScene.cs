@@ -204,27 +204,38 @@ namespace CocosSharp
 
 #if USE_PHYSICS
 		public CCScene(CCWindow window, CCDirector director, bool physics = false)
+			: this(window, new CCViewport(new CCRect(0.0f, 0.0f, 1.0f, 1.0f)), director, physics)
 #else
 		public CCScene(CCWindow window, CCDirector director)
-#endif
 			: this(window, new CCViewport(new CCRect(0.0f, 0.0f, 1.0f, 1.0f)), director)
+#endif
 		{
 		}
 
 
 #if USE_PHYSICS
 		public CCScene(CCWindow window, bool physics = false)
+			: this(window, window.DefaultDirector, physics)
 #else
 		public CCScene(CCWindow window)
-#endif
 			: this(window, window.DefaultDirector)
+#endif
+
 		{
 		}
 
+
+#if USE_PHYSICS
+		public CCScene(CCScene scene, bool physics = false)
+			: this(scene.Window, scene.Viewport, scene.Director, physics)
+#else
 		public CCScene(CCScene scene)
 			: this(scene.Window, scene.Viewport, scene.Director)
+#endif
 		{
+
 		}
+
 
 		#endregion Constructors
 
@@ -390,10 +401,11 @@ namespace CocosSharp
 				   }
 
 				   var children = node.Children;
-				   foreach (var n in children)
-				   {
-					   addToPhysicsWorldFunc(n);
-				   }
+				   if (children != null)
+					   foreach (var n in children)
+					   {
+						   addToPhysicsWorldFunc(n);
+					   }
 
 			   });
 

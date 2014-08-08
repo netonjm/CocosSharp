@@ -46,7 +46,9 @@ namespace CocosSharp
 
 	public struct CCPhysicsMaterial
 	{
-		public static CCPhysicsMaterial PHYSICSSHAPE_MATERIAL_DEFAULT { get { return new CCPhysicsMaterial(0.0f, 0.5f, 0.5f); } }
+
+
+		public static CCPhysicsMaterial PHYSICSSHAPE_MATERIAL_DEFAULT { get { return new CCPhysicsMaterial(0.100000001f, 0.5f, 0.5f); } }
 
 		public float density;          ///< The density of the object.
 		public float restitution;      ///< The bounciness of the physics body.
@@ -86,6 +88,7 @@ namespace CocosSharp
 
 		protected CCPhysicsMaterial _material;
 		protected int _tag;
+
 		protected int _categoryBitmask;
 		protected int _collisionBitmask;
 		protected int _contactTestBitmask;
@@ -101,14 +104,14 @@ namespace CocosSharp
 
 		#endregion
 
-		public CCPhysicsShape(PhysicsType type)
+		public CCPhysicsShape()
 		{
 			_body = null;
 			_info = null;
 			_type = PhysicsType.UNKNOWN;
 			_area = 0;
-			_mass = 0;
-			_moment = 0;
+			_mass = CCPhysicsBody.MASS_DEFAULT;
+			_moment = CCPhysicsBody.MOMENT_DEFAULT;
 			_tag = 0;
 			_categoryBitmask = int.MaxValue;
 			_collisionBitmask = int.MaxValue;
@@ -116,27 +119,16 @@ namespace CocosSharp
 			_group = 0;
 
 			_info = new CCPhysicsShapeInfo(this);
-			_type = type;
 
+			_scaleX = 1.0f;
+			_scaleY = 1.0f;
+			_newScaleX = 1.0f;
+			_newScaleY = 1.0f;
 			_dirty = false;
 
 		}
 
-		//public PhysicsShape(PhysicsType type)
-		//	: this()
-		//{
-		//	_type = type;
-		//}
-
-
-		//public bool Init(PhysicsType type)
-		//{
-
-		//	return true;
-		//}
-
-
-		public virtual void Update()
+		public virtual void Update(float delta)
 		{
 			if (_dirty)
 			{
@@ -157,15 +149,15 @@ namespace CocosSharp
 		#region PUBLIC METHODS
 
 		/** Get the body that this shape attaches */
-		public CCPhysicsBody getBody() { return _body; }
+		public CCPhysicsBody GetBody() { return _body; }
 		/** Return the type of this shape */
-		public PhysicsType getType() { return _type; }
+		public PhysicsType GetPhysicsType() { return _type; }
 		/** return the area of this shape */
-		public float getArea() { return _area; }
+		public float GetArea() { return _area; }
 		/** get moment */
-		public float getMoment() { return _moment; }
+		public float GetMoment() { return _moment; }
 		/** Set moment, it will change the body's moment this shape attaches */
-		public void setMoment(float moment)
+		public void SetMoment(float moment)
 		{
 			if (moment < 0)
 			{
@@ -181,11 +173,16 @@ namespace CocosSharp
 			_moment = moment;
 		}
 
-		public void setTag(int tag) { _tag = tag; }
-		public int getTag() { return _tag; }
+		public void SetTag(int tag) { _tag = tag; }
+		public int GetTag() { return _tag; }
 
 		/** get mass */
-		public float getMass() { return _mass; }
+		public float GetMass()
+		{
+
+			return _mass;
+
+		}
 		/** Set mass, it will change the body's mass this shape attaches */
 		/** Set mass, it will change the body's mass this shape attaches */
 		public void SetMass(float mass)
@@ -204,9 +201,9 @@ namespace CocosSharp
 			_mass = mass;
 		}
 
-		public float getDensity() { return _material.density; }
+		public float GetDensity() { return _material.density; }
 
-		public void setDensity(float density)
+		public void SetDensity(float density)
 		{
 			if (density < 0)
 			{
@@ -215,9 +212,9 @@ namespace CocosSharp
 
 			_material.density = density;
 
-			if (_material.density == cp.Infinity)
+			if (_material.density == cp.PHYSICS_INFINITY)
 			{
-				SetMass(cp.Infinity);
+				SetMass(cp.PHYSICS_INFINITY);
 			}
 			else if (_area > 0)
 			{
@@ -225,8 +222,8 @@ namespace CocosSharp
 				SetMass(_material.density * _area);
 			}
 		}
-		public float getRestitution() { return _material.restitution; }
-		public void setRestitution(float restitution)
+		public float GetRestitution() { return _material.restitution; }
+		public void SetRestitution(float restitution)
 		{
 			_material.restitution = restitution;
 
@@ -236,8 +233,8 @@ namespace CocosSharp
 			}
 		}
 
-		public float getFriction() { return _material.friction; }
-		public void setFriction(float friction)
+		public float GetFriction() { return _material.friction; }
+		public void SetFriction(float friction)
 		{
 			_material.friction = friction;
 
@@ -246,13 +243,19 @@ namespace CocosSharp
 				shape.SetFriction(friction);
 			}
 		}
-		public CCPhysicsMaterial getMaterial() { return _material; }
-		public void setMaterial(CCPhysicsMaterial material)
+		public CCPhysicsMaterial GetMaterial() { return _material; }
+		public void SetMaterial(CCPhysicsMaterial material)
 		{
-			setDensity(material.density);
-			setRestitution(material.restitution);
-			setFriction(material.friction);
+			SetDensity(material.density);
+			SetRestitution(material.restitution);
+			SetFriction(material.friction);
 		}
+
+		public void SetGroup(int group) { _group = group; }
+
+		public int GetGroup() { return _group; }
+
+
 
 		/** Calculate the default moment value */
 		public virtual float CalculateDefaultMoment() { return 0.0f; }
@@ -261,7 +264,7 @@ namespace CocosSharp
 		/** Get center of this shape */
 		public virtual cpVect GetCenter() { return GetOffset(); }
 		/** Test point is in shape or not */
-		public bool containsPoint(cpVect point)
+		public bool ContainsPoint(cpVect point)
 		{
 
 
@@ -280,7 +283,7 @@ namespace CocosSharp
 
 
 		/** move the points to the center */
-		public static void recenterPoints(cpVect[] points, int count, cpVect center)
+		public static void RecenterPoints(cpVect[] points, int count, cpVect center)
 		{
 			cp.RecenterPoly(count, points);
 			if (center != cpVect.Zero)
@@ -293,7 +296,7 @@ namespace CocosSharp
 
 		}
 		/** get center of the polyon points */
-		public static cpVect getPolyonCenter(cpVect[] points, int count)
+		public static cpVect GetPolyonCenter(cpVect[] points, int count)
 		{
 			return cp.CentroidForPoly(count, points);
 		}
@@ -303,24 +306,58 @@ namespace CocosSharp
 		 * Every physics body in a scene can be assigned to up to 32 different categories, each corresponding to a bit in the bit mask. You define the mask values used in your game. In conjunction with the collisionBitMask and contactTestBitMask properties, you define which physics bodies interact with each other and when your game is notified of these interactions.
 		 * The default value is 0xFFFFFFFF (all bits set).
 		 */
-		public void setCategoryBitmask(int bitmask) { _categoryBitmask = bitmask; }
-		public int getCategoryBitmask() { return _categoryBitmask; }
+		public void SetCategoryBitmask(int bitmask) { _categoryBitmask = bitmask; }
+		public int GetCategoryBitmask() { return _categoryBitmask; }
 		/**
 		 * A mask that defines which categories of bodies cause intersection notifications with this physics body.
 		 * When two bodies share the same space, each body’s category mask is tested against the other body’s contact mask by performing a logical AND operation. If either comparison results in a non-zero value, an PhysicsContact object is created and passed to the physics world’s delegate. For best performance, only set bits in the contacts mask for interactions you are interested in.
 		 * The default value is 0x00000000 (all bits cleared).
 		 */
-		public void setContactTestBitmask(int bitmask) { _contactTestBitmask = bitmask; }
-		public int getContactTestBitmask() { return _contactTestBitmask; }
+		public void SetContactTestBitmask(int bitmask) { _contactTestBitmask = bitmask; }
+		public int GetContactTestBitmask() { return _contactTestBitmask; }
 		/**
 		 * A mask that defines which categories of physics bodies can collide with this physics body.
 		 * When two physics bodies contact each other, a collision may occur. This body’s collision mask is compared to the other body’s category mask by performing a logical AND operation. If the result is a non-zero value, then this body is affected by the collision. Each body independently chooses whether it wants to be affected by the other body. For example, you might use this to avoid collision calculations that would make negligible changes to a body’s velocity.
 		 * The default value is 0xFFFFFFFF (all bits set).
 		 */
-		public void setCollisionBitmask(int bitmask) { _collisionBitmask = bitmask; }
-		public int getCollisionBitmask() { return _collisionBitmask; }
+		public void SetCollisionBitmask(int bitmask) { _collisionBitmask = bitmask; }
+		public int GetCollisionBitmask() { return _collisionBitmask; }
 
-		public int getGroup() { return _group; }
+		public void SetCollisionType(ulong collisionType)
+		{
+			foreach (cpShape shape in _info.getShapes())
+			{
+				shape.SetCollisionType(collisionType);
+			}
+		}
+
+		public void SetElasticity(float elasticity)
+		{
+			foreach (cpShape shape in _info.getShapes())
+			{
+				shape.SetElasticity(elasticity);
+			}
+		}
+
+		public void SetSurfaceVelocity(cpVect surfaceVelocity)
+		{
+			foreach (cpShape shape in _info.getShapes())
+			{
+				shape.SetSurfaceVelocity(surfaceVelocity);
+			}
+		}
+
+
+
+		public void SetSensor(bool sensor)
+		{
+			foreach (cpShape shape in _info.getShapes())
+			{
+				shape.SetSensor(sensor);
+			}
+		}
+
+
 
 		#endregion
 
@@ -331,14 +368,18 @@ namespace CocosSharp
 		/**
 		 * @brief PhysicsShape is PhysicsBody's friend class, but all the subclasses isn't. so this method is use for subclasses to catch the bodyInfo from PhysicsBody.
 		 */
-		protected CCPhysicsBodyInfo bodyInfo()
+
+		public CCPhysicsBodyInfo BodyInfo
 		{
-			if (_body != null)
-				return _body._info;
-			return null;
+			get
+			{
+				if (_body != null)
+					return _body._info;
+				return null;
+			}
 		}
 
-		public void setBody(CCPhysicsBody body)
+		public void SetBody(CCPhysicsBody body)
 		{
 			// already added
 			if (body != null && _body == body)
@@ -368,10 +409,7 @@ namespace CocosSharp
 
 		#endregion
 
-		internal void setGroup(int group)
-		{
-			_group = group;
-		}
+
 
 		internal void SetScale(float scale)
 		{
@@ -407,6 +445,10 @@ namespace CocosSharp
 		}
 
 
+
+
+
+
 	}
 
 	/** A circle shape */
@@ -420,8 +462,9 @@ namespace CocosSharp
 		}
 
 		public CCPhysicsShapeCircle(CCPhysicsMaterial material, float radius, cpVect offset)
-			: base(PhysicsType.CIRCLE)
 		{
+
+			_type = PhysicsType.CIRCLE;
 
 			cpShape shape = new cpCircleShape(CCPhysicsShapeInfo.getSharedBody(), radius, offset);
 
@@ -431,22 +474,12 @@ namespace CocosSharp
 			_mass = material.density == cp.Infinity ? cp.Infinity : material.density * _area;
 			_moment = CalculateDefaultMoment();
 
-			setMaterial(material);
+			SetMaterial(material);
 		}
 
 
 		#region PUBLIC METHODS
 
-		//public static CCPhysicsShapeCircle Create(float radius, CCPhysicsMaterial material, cpVect offset)
-		//{
-		//	CCPhysicsShapeCircle shape = new CCPhysicsShapeCircle();
-		//	if (shape != null && shape.Init(radius, material, offset))
-		//	{
-		//		return shape;
-		//	}
-
-		//	return null;
-		//}
 
 		public static float CalculateArea(float radius)
 		{
@@ -458,6 +491,8 @@ namespace CocosSharp
 			return mass == cp.Infinity ? cp.Infinity
 		  : (cp.MomentForCircle(mass, 0, radius, offset));
 		}
+
+
 
 		public override float CalculateDefaultMoment()
 		{
@@ -471,7 +506,7 @@ namespace CocosSharp
 
 		}
 
-		public override void Update()
+		public override void Update(float delta)
 		{
 
 			if (_dirty)
@@ -487,7 +522,7 @@ namespace CocosSharp
 			}
 
 
-			base.Update();
+			base.Update(delta);
 		}
 
 		public float GetRadius()
@@ -515,7 +550,7 @@ namespace CocosSharp
 	}
 
 	/** A box shape */
-	public class CCPhysicsShapeBox : CCPhysicsShape
+	public class CCPhysicsShapeBox : CCPhysicsShapePolygon
 	{
 
 		#region PROTECTED  PARAMETERS
@@ -525,10 +560,11 @@ namespace CocosSharp
 		#region PUBLIC METHODS
 
 		public CCPhysicsShapeBox(CCSize size, CCPhysicsMaterial material, float radius)
-			: base(PhysicsType.BOX)
 		{
 
 			cpVect wh = PhysicsHelper.size2cpv(size);
+
+			_type = PhysicsType.BOX;
 
 			cpVect[] vec = {
                              
@@ -548,7 +584,8 @@ namespace CocosSharp
 			_mass = material.density == cp.Infinity ? cp.Infinity : material.density * _area;
 			_moment = CalculateDefaultMoment();
 
-			setMaterial(material);
+			SetMaterial(material);
+
 		}
 
 
@@ -570,33 +607,35 @@ namespace CocosSharp
 	public class CCPhysicsShapePolygon : CCPhysicsShape
 	{
 
-		public CCPhysicsShapePolygon(cpVect[] vecs, int count, CCPhysicsMaterial material, float radius)
-			: base(PhysicsType.POLYGEN)
+		public CCPhysicsShapePolygon()
 		{
 
-			cpShape shape = new cpPolyShape(CCPhysicsShapeInfo.getSharedBody(), count, vecs, radius);
-			//CC_SAFE_DELETE_ARRAY(vecs);
+		}
 
-			//if (shape == null)
-			//	return false;
+		public void Init(cpVect[] vecs, int count, CCPhysicsMaterial material, float radius)
+		{
+			_type = PhysicsType.POLYGEN;
+
+			cpShape shape = new cpPolyShape(CCPhysicsShapeInfo.getSharedBody(), count, vecs, radius);
+
 
 			_info.add(shape);
 
 			_area = CalculateArea();
 			_mass = material.density == cp.Infinity ? cp.Infinity : material.density * _area;
 			_moment = CalculateDefaultMoment();
-			//_center = cp.CentroidForPoly((shape as cpPolyShape).verts);
 
-			setMaterial(material);
+			SetMaterial(material);
+
 		}
 
-		//#region PROTECTED PROPERTIES
-		//cpVect _center;
-		//#endregion
+		public CCPhysicsShapePolygon(cpVect[] vecs, int count, CCPhysicsMaterial material, float radius)
+		{
+			Init(vecs, count, material, radius);
+
+		}
 
 		#region PUBLIC METHODS
-
-
 
 		public static float CalculateMoment(float mass, cpVect[] vecs, int count, cpVect offset)
 		{
@@ -632,32 +671,16 @@ namespace CocosSharp
 		#endregion
 
 		#region PROTECTED METHODS
-		//protected bool Init(float[] vecs, CCPhysicsMaterial material, cpVect offset)
-		//{
-		//	//cpVect[] vecs = new cpVect[count];
-		//	//PhysicsHelper::points2cpvs(points, vecs, count);
-
-		//	if (!base.Init())
-		//		return false;
-
-
-
-		//	return true;
-		//}
-
-
 
 		protected override float CalculateArea()
 		{
 			cpPolyShape shape = (cpPolyShape)_info.getShapes().FirstOrDefault(); //.front();
-			return cp.AreaForPoly(shape.Count, shape.GetVertices(), 0.0f);
+			return cp.AreaForPolyOld(shape.Count, shape.GetVertices());
 		}
 
 		#endregion
 
-
 	}
-
 
 	/** A segment shape */
 	public class CCPhysicsShapeEdgeSegment : CCPhysicsShape
@@ -670,16 +693,14 @@ namespace CocosSharp
 		}
 
 		public CCPhysicsShapeEdgeSegment(cpVect a, cpVect b, CCPhysicsMaterial material, float border = 1)
-			: base(PhysicsType.EDGESEGMENT)
 		{
-
-			//if (!base.Init())
-			//	return false;
 
 			cpShape shape = new cpSegmentShape(CCPhysicsShapeInfo.getSharedBody(),
 										   a,
 										   b,
 										   border);
+
+			_type = PhysicsType.EDGESEGMENT;
 
 
 			_info.add(shape);
@@ -687,21 +708,10 @@ namespace CocosSharp
 			_mass = cp.Infinity;
 			_moment = cp.Infinity;
 
-			setMaterial(material);
+			SetMaterial(material);
 		}
 
-
-
 		#region PUBLIC METHODS
-		//public static CCPhysicsShapeEdgeSegment Create(cpVect a, cpVect b, CCPhysicsMaterial material, float border = 1)
-		//{
-		//	CCPhysicsShapeEdgeSegment shape = new CCPhysicsShapeEdgeSegment();
-		//	if (shape != null && shape.Init(a, b, material, border))
-		//	{
-		//		return shape;
-		//	}
-		//	return null;
-		//}
 
 		public cpVect GetPointA()
 		{
@@ -721,12 +731,9 @@ namespace CocosSharp
 	{
 
 		public CCPhysicsShapeEdgeBox(CCSize size, CCPhysicsMaterial material, float border /* = 1 */, cpVect offset)
-			: base(PhysicsType.EDGEBOX)
 		{
 
-			//if (!base.Init(PhysicsType.EDGEBOX))
-			//	return false;
-
+			_type = PhysicsType.EDGEBOX;
 
 			List<cpVect> vec = new List<cpVect>() {
               new cpVect(-size.Width/2+offset.x, -size.Height/2+offset.y),
@@ -741,37 +748,21 @@ namespace CocosSharp
 			{
 				cpShape shape = new cpSegmentShape(CCPhysicsShapeInfo.getSharedBody(), vec[i], vec[(i + 1) % 4],
 												   border);
-				if (shape == null)
-					_info.add(shape);
+				_info.add(shape);
 			}
 
-			//if (i < 4)
-			//	return false;
-
-
 			_offset = offset;
-			_mass = cp.Infinity;
-			_moment = cp.Infinity;
+			_mass = CCPhysicsBody.MASS_DEFAULT;
+			_moment = CCPhysicsBody.MOMENT_DEFAULT;
 
-			setMaterial(material);
+			SetMaterial(material);
 		}
-
 
 		#region PROTECTED PROPERTIES
 		protected cpVect _offset;
 		#endregion
 
 		#region PUBLIC PROPERTIES
-
-		//public static CCPhysicsShapeEdgeBox Create(CCSize size, CCPhysicsMaterial material /* = CCPhysicsMaterial.PHYSICSSHAPE_MATERIAL_DEFAULT */, float border /* = 0 */, cpVect offset /* = cpVect.ZERO*/)
-		//{
-		//	CCPhysicsShapeEdgeBox shape = new CCPhysicsShapeEdgeBox();
-		//	if (shape != null && shape.Init(size, material, border, offset))
-		//	{
-		//		return shape;
-		//	}
-		//	return null;
-		//}
 
 		public override cpVect GetOffset() { return _offset; }
 		public List<cpVect> GetPoints()
@@ -788,17 +779,6 @@ namespace CocosSharp
 
 		#endregion
 
-		#region PROTECTED PROPERTIES
-		//protected bool Init(CCSize size, CCPhysicsMaterial material, float border /* = 1 */, cpVect offset)
-		//{
-
-
-
-		//	return true;
-		//}
-
-		#endregion
-
 	}
 
 	/** An edge polygon shape */
@@ -806,15 +786,35 @@ namespace CocosSharp
 	{
 
 
-		public CCPhysicsShapeEdgePolygon(List<cpVect> vec, int count, CCPhysicsMaterial material, float border = 1)
-			: base(PhysicsType.EDGEPOLYGEN)
+		public override void Update(float delta)
 		{
-			//if (!base.Init(PhysicsType.EDGEPOLYGEN))
-			//	return false;
+
+			if (_dirty)
+			{
+				float factorX = _newScaleX / _scaleX;
+				float factorY = _newScaleY / _scaleY;
 
 
-			//  CC_BREAK_IF(!PhysicsShape::init(Type::EDGEPOLYGEN));
+				foreach (cpSegmentShape shape in _info.getShapes())
+				{
+					cpVect a = shape.GetA();
+					a.x *= factorX;
+					a.y *= factorY;
+					cpVect b = shape.GetB();
+					b.x *= factorX;
+					b.y *= factorY;
+					shape.SetEndpoints(a, b);
+				}
+			}
 
+			base.Update(delta);
+		}
+
+
+		public CCPhysicsShapeEdgePolygon(cpVect[] vec, int count, CCPhysicsMaterial material, float border = 1)
+		{
+
+			_type = PhysicsType.EDGEPOLYGEN;
 
 			int i = 0;
 			for (; i < count; ++i)
@@ -834,26 +834,48 @@ namespace CocosSharp
 			_mass = cp.Infinity;
 			_moment = cp.Infinity;
 
-			setMaterial(material);
+			SetMaterial(material);
 
 		}
 
+
 		#region PUBLIC PROPERTIES
 
-		public List<cpVect> GetPoints()
+		public override cpVect GetCenter()
 		{
-			List<cpVect> outPoints = new List<cpVect>();
-			// int i = 0;
-			foreach (var shape in _info.getShapes())
+			var shapes = _info.getShapes();
+			int count = (int)shapes.Count;
+			cpVect[] points = new cpVect[count];
+			int i = 0;
+			foreach (var shape in shapes)
 			{
-				outPoints.Add(((cpSegmentShape)shape).a);
+				points[i++] = ((cpSegmentShape)shape).a;
 			}
+
+			cpVect center = cp.CentroidForPoly(count, points);
+
+			return center;
+		}
+
+
+
+		public cpVect[] GetPoints()
+		{
+
+			var shapes = _info.getShapes();
+
+			cpVect[] outPoints = new cpVect[shapes.Count];
+			for (int i = 0; i < shapes.Count; i++)
+			{
+				outPoints[i] = new cpVect(((cpSegmentShape)shapes[i]).a);
+			}
+
 			return outPoints;
 
 		}
 		public int GetPointsCount()
 		{
-			return (_info.getShapes().Count + 1);
+			return (_info.getShapes().Count);
 		}
 
 		#endregion
@@ -864,9 +886,10 @@ namespace CocosSharp
 	public class CCPhysicsShapeEdgeChain : CCPhysicsShape
 	{
 
-		public CCPhysicsShapeEdgeChain(List<cpVect> vec, int count, CCPhysicsMaterial material, float border = 1)
-			: base(PhysicsType.EDGECHAIN)
+		public CCPhysicsShapeEdgeChain(cpVect[] vec, int count, CCPhysicsMaterial material, float border = 1)
 		{
+
+			_type = PhysicsType.EDGECHAIN;
 
 			int i = 0;
 			for (; i < count; ++i)
@@ -882,7 +905,7 @@ namespace CocosSharp
 			_mass = cp.Infinity;
 			_moment = cp.Infinity;
 
-			setMaterial(material);
+			SetMaterial(material);
 		}
 
 		#region PROTECTED PROPERTIES
@@ -891,15 +914,6 @@ namespace CocosSharp
 
 		#region PUBLIC PROPERTIES
 
-		//public static CCPhysicsShapeEdgeChain Create(List<cpVect> points, int count, CCPhysicsMaterial material, float border = 1)
-		//{
-		//	CCPhysicsShapeEdgeChain shape = new CCPhysicsShapeEdgeChain();
-		//	if (shape != null && shape.Init(points, count, material, border))
-		//	{
-		//		return shape;
-		//	}
-		//	return null;
-		//}
 		public override cpVect GetCenter()
 		{
 			return _center;
@@ -916,7 +930,6 @@ namespace CocosSharp
 			return outPoints;
 		}
 
-
 		public int GetPointsCount()
 		{
 			return (_info.getShapes().Count + 1);
@@ -924,44 +937,6 @@ namespace CocosSharp
 
 		#endregion
 
-		//#region PROTECTED PROPERTIES
-		//protected bool Init(List<cpVect> vec, int count, CCPhysicsMaterial material, float border = 1) :
-		//{
-
-		//	if (!base.Init(PhysicsType.EDGECHAIN))
-		//		return false;
-
-
-		//	_center = cp.centroidForPoly(cp.ConvertToFloatArray(vec));
-
-		//	int i = 0;
-		//	for (; i < count; ++i)
-		//	{
-		//		cpShape shape = new cpSegmentShape(CCPhysicsShapeInfo.getSharedBody(), vec[i], vec[i + 1],
-		//									  border);
-
-		//		if (shape == null)
-		//			break;
-
-		//		shape.setElasticity(1.0f);
-		//		shape.setFriction(1.0f);
-
-		//		_info.add(shape);
-		//	}
-
-		//	if (i < count - 1)
-		//		return false;
-
-		//	_mass = cp.Infinity;
-		//	_moment = cp.Infinity;
-
-		//	setMaterial(material);
-
-		//	return true;
-
-		//}
-
-		//#endregion
 	}
 
 }

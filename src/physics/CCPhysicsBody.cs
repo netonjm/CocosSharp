@@ -42,8 +42,8 @@ namespace CocosSharp
 			}
 		}
 
-		static float MASS_DEFAULT = 1.0f;
-		static float MOMENT_DEFAULT = 200;
+		public const float MASS_DEFAULT = 1.0f;
+		public const float MOMENT_DEFAULT = 200;
 
 		#region PROTECTED PARAMETERS
 
@@ -78,6 +78,7 @@ namespace CocosSharp
 		internal float _rotationOffset;
 
 
+
 		#endregion
 
 		/**
@@ -103,6 +104,8 @@ namespace CocosSharp
 		{
 
 		}
+
+
 
 		public CCPhysicsBody(float mass, float moment, cpVect offset)
 		{
@@ -135,6 +138,24 @@ namespace CocosSharp
 
 			_info = new CCPhysicsBodyInfo();
 			_info.SetBody(new cpBody(_mass, _moment));
+
+		}
+
+		public CCPhysicsBody(CCPhysicsShape shape)
+			: this(0f, 0f, cpVect.Zero)
+		{
+			AddShape(shape);
+		}
+
+
+		public CCPhysicsBody(List<CCPhysicsShape> shapes)
+			: this(0f, 0f, cpVect.Zero)
+		{
+
+			foreach (var item in shapes)
+			{
+				AddShape(item);
+			}
 
 		}
 
@@ -225,8 +246,15 @@ namespace CocosSharp
 		{
 
 			CCPhysicsBody body = new CCPhysicsBody();
+			body.SetMass(MASS_DEFAULT);
 			body.AddShape(new CCPhysicsShapeCircle(material, radius, offset));
 			return body;
+		}
+
+
+		public static CCPhysicsBody CreateCircle(float radius, cpVect offset)
+		{
+			return CreateCircle(radius, CCPhysicsMaterial.PHYSICSSHAPE_MATERIAL_DEFAULT, offset);
 		}
 		/** Create a body contains a box shape. */
 		public static CCPhysicsBody CreateBox(CCSize size, CCPhysicsMaterial material, float radius)
@@ -235,6 +263,14 @@ namespace CocosSharp
 			body.AddShape(new CCPhysicsShapeBox(size, material, radius));
 			return body;
 		}
+
+
+		public static CCPhysicsBody CreateBox(CCSize size, float radius)
+		{
+
+			return CreateBox(size, CCPhysicsMaterial.PHYSICSSHAPE_MATERIAL_DEFAULT, radius);
+		}
+
 		/**
 		 * @brief Create a body contains a polygon shape.
 		 * points is an array of cpVect structs defining a convex hull with a clockwise winding.
@@ -246,6 +282,13 @@ namespace CocosSharp
 			body.AddShape(new CCPhysicsShapePolygon(points, count, material, radius));
 			return body;
 		}
+
+		public static CCPhysicsBody CreatePolygon(cpVect[] points, int count, float radius)
+		{
+			return CreatePolygon(points, count, CCPhysicsMaterial.PHYSICSSHAPE_MATERIAL_DEFAULT, radius);
+		}
+
+
 		/** Create a body contains a EdgeSegment shape. */
 		public static CCPhysicsBody CreateEdgeSegment(cpVect a, cpVect b, CCPhysicsMaterial material, float border = 1)
 		{
@@ -257,6 +300,14 @@ namespace CocosSharp
 			return body;
 
 		}
+
+		public static CCPhysicsBody CreateEdgeSegment(cpVect a, cpVect b, float border = 1)
+		{
+			return CreateEdgeSegment(a, b, CCPhysicsMaterial.PHYSICSSHAPE_MATERIAL_DEFAULT, border);
+		}
+
+
+
 		/** Create a body contains a EdgeBox shape. */
 		public static CCPhysicsBody CreateEdgeBox(CCSize size, CCPhysicsMaterial material, float border, cpVect offset)
 		{
@@ -266,21 +317,40 @@ namespace CocosSharp
 			return body;
 		}
 
+		public static CCPhysicsBody CreateEdgeBox(CCSize size, float border, cpVect offset)
+		{
+			return CreateEdgeBox(size, CCPhysicsMaterial.PHYSICSSHAPE_MATERIAL_DEFAULT, border, offset);
+		}
+
+
 		/** Create a body contains a EdgePolygon shape. */
-		public static CCPhysicsBody CreateEdgePolygon(List<cpVect> points, int count, CCPhysicsMaterial material, float border = 1)
+		public static CCPhysicsBody CreateEdgePolygon(cpVect[] points, int count, CCPhysicsMaterial material, float border = 1)
 		{
 			CCPhysicsBody body = new CCPhysicsBody();
 			body.AddShape(new CCPhysicsShapeEdgePolygon(points, count, material, border));
 			body._dynamic = false;
 			return body;
 		}
+
+
+		public static CCPhysicsBody CreateEdgePolygon(cpVect[] points, int count, float border = 1)
+		{
+			return CreateEdgePolygon(points, count, CCPhysicsMaterial.PHYSICSSHAPE_MATERIAL_DEFAULT, border);
+		}
+
 		/** Create a body contains a EdgeChain shape. */
-		public static CCPhysicsBody CreateEdgeChain(List<cpVect> points, int count, CCPhysicsMaterial material, float border = 1)
+		public static CCPhysicsBody CreateEdgeChain(cpVect[] points, int count, CCPhysicsMaterial material, float border = 1)
 		{
 			CCPhysicsBody body = new CCPhysicsBody();
 			body.AddShape(new CCPhysicsShapeEdgeChain(points, count, material, border));
 			body._dynamic = false;
 			return body;
+		}
+
+
+		public static CCPhysicsBody CreateEdgeChain(cpVect[] points, int count, float border = 1)
+		{
+			return CreateEdgeChain(points, count, CCPhysicsMaterial.PHYSICSSHAPE_MATERIAL_DEFAULT, border);
 		}
 
 		/*
@@ -295,15 +365,15 @@ namespace CocosSharp
 			// add shape to body
 			if (!_shapes.Exists((s) => s == shape))
 			{
-				shape.setBody(this);
+				shape.SetBody(this);
 
 				// calculate the area, mass, and desity
 				// area must update before mass, because the density changes depend on it.
 				if (addMassAndMoment)
 				{
-					_area += shape.getArea();
-					AddMass(shape.getMass());
-					AddMoment(shape.getMoment());
+					_area += shape.GetArea();
+					AddMass(shape.GetMass());
+					AddMoment(shape.GetMoment());
 				}
 
 				if (_world != null)
@@ -313,9 +383,9 @@ namespace CocosSharp
 
 				_shapes.Add(shape);
 
-				if (_group != cp.NO_GROUP && shape.getGroup() == cp.NO_GROUP)
+				if (_group != cp.NO_GROUP && shape.GetGroup() == cp.NO_GROUP)
 				{
-					shape.setGroup(_group);
+					shape.SetGroup(_group);
 				}
 			}
 
@@ -334,9 +404,9 @@ namespace CocosSharp
 				// area must update before mass, because the density changes depend on it.
 				if (reduceMassAndMoment)
 				{
-					_area -= shape.getArea();
-					AddMass(-shape.getMass());
-					AddMoment(-shape.getMoment());
+					_area -= shape.GetArea();
+					AddMass(-shape.GetMass());
+					AddMoment(-shape.GetMoment());
 				}
 
 				//remove
@@ -347,7 +417,7 @@ namespace CocosSharp
 
 				// set shape->_body = nullptr make the shape->setBody will not trigger the _body->removeShape function call.
 				shape._body = null;
-				shape.setBody(null);
+				shape.SetBody(null);
 
 				_shapes.Remove(shape);
 			}
@@ -363,7 +433,7 @@ namespace CocosSharp
 		{
 			foreach (var shape in _shapes)
 			{
-				if (shape.getTag() == tag)
+				if (shape.GetTag() == tag)
 				{
 					RemoveShape(shape, reduceMassAndMoment);
 					return;
@@ -379,9 +449,9 @@ namespace CocosSharp
 				// area must update before mass, because the density changes depend on it.
 				if (reduceMassAndMoment)
 				{
-					_area -= shape.getArea();
-					AddMass(-shape.getMass());
-					AddMoment(-shape.getMoment());
+					_area -= shape.GetArea();
+					AddMass(-shape.GetMass());
+					AddMoment(-shape.GetMoment());
 				}
 
 				if (_world != null)
@@ -391,7 +461,7 @@ namespace CocosSharp
 
 				// set shape->_body = nullptr make the shape->setBody will not trigger the _body->removeShape function call.
 				shape._body = null;
-				shape.setBody(null);
+				shape.SetBody(null);
 			}
 			_shapes.Clear();
 		}
@@ -405,7 +475,7 @@ namespace CocosSharp
 
 			foreach (var shape in _shapes)
 			{
-				if (shape.getTag() == tag)
+				if (shape.GetTag() == tag)
 				{
 					return shape;
 				}
@@ -549,7 +619,7 @@ namespace CocosSharp
 
 			foreach (var shape in _shapes)
 			{
-				shape.setCategoryBitmask(bitmask);
+				shape.SetCategoryBitmask(bitmask);
 			}
 
 		}
@@ -564,7 +634,7 @@ namespace CocosSharp
 
 			foreach (var shape in _shapes)
 			{
-				shape.setContactTestBitmask(bitmask);
+				shape.SetContactTestBitmask(bitmask);
 			}
 		}
 		/**
@@ -578,7 +648,7 @@ namespace CocosSharp
 
 			foreach (var shape in _shapes)
 			{
-				shape.setCollisionBitmask(bitmask);
+				shape.SetCollisionBitmask(bitmask);
 			}
 		}
 		/** get the category bit mask */
@@ -597,7 +667,7 @@ namespace CocosSharp
 		{
 			foreach (var shape in _shapes)
 			{
-				shape.setGroup(group);
+				shape.SetGroup(group);
 			}
 		}
 		/** get the group of body */
@@ -701,8 +771,8 @@ namespace CocosSharp
 
 					// avoid incorrect collion simulation.
 					var body = _info.GetBody();
-					body.SetMass(cp.Infinity);
-					body.SetMoment(cp.Infinity);
+					body.SetMass(CCPhysicsBody.MASS_DEFAULT);
+					body.SetMoment(CCPhysicsBody.MOMENT_DEFAULT);
 					body.SetVelocity(cpVect.Zero);
 					body.SetAngularVelocity(0.0f);
 

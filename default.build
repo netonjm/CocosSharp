@@ -24,19 +24,18 @@
   </target>
 
   <target name="build" description="Build MonoGame Release" depends="monogame">
-
-    <call target="buildPCL"/>
-    <call target="buildwindows"/>
+	<call target="buildPCL"/>
+	<call target="buildwindows"/>
+	<call target="buildnugets"/>
+	<call target="buildtemplates"/>
+   <!--
     <call target="buildwindowsphone8"/>
     <call target="buildwindows8"/>
     <call target="buildios"/>
     <call target="buildmac"/>
     <call target="buildandroid"/>
     <call target="buildouya"/>
-
-    <call target="buildnugets"/>
-
-    <call target="buildtemplates"/>
+	-->
   </target>
 
   <target name="monogame" description="Build MonoGame Release" depends="checkos">
@@ -60,12 +59,15 @@
 
   <target name="buildwindows" description="Build Windows" depends="clean">
     <if test="${os == 'Win32NT'}">
-      <exec program="msbuild " commandline="CocosSharp.Windows.sln /t:Clean /p:Configuration=Release" />
-      <exec program="msbuild " commandline="CocosSharp.Windows.sln /t:Build /p:Configuration=Release" />
-      <exec program="msbuild " commandline="CocosSharp.WindowsGL.sln /t:Clean /p:Configuration=Release" />
-      <exec program="msbuild " commandline="CocosSharp.WindowsGL.sln /t:Build /p:Configuration=Release" />
-      <exec program="msbuild " commandline="CocosSharp.WindowsDX.sln /t:Clean /p:Configuration=Release" />
-      <exec program="msbuild " commandline="CocosSharp.WindowsDX.sln /t:Build /p:Configuration=Release" />
+     
+	  <exec program="msbuild " commandline="CocosSharp.Windows.sln /t:Clean /p:Configuration=PhysicsRelease" />
+      <exec program="msbuild " commandline="CocosSharp.Windows.sln /t:Build /p:Configuration=PhysicsRelease" />
+      <exec program="msbuild " commandline="CocosSharp.WindowsGL.sln /t:Clean /p:Configuration=PhysicsRelease" />
+      <exec program="msbuild " commandline="CocosSharp.WindowsGL.sln /t:Build /p:Configuration=PhysicsRelease" />
+	
+      <exec program="msbuild " commandline="CocosSharp.WindowsDX.sln /t:Clean /p:Configuration=PhysicsRelease" />
+      <exec program="msbuild " commandline="CocosSharp.WindowsDX.sln /t:Build /p:Configuration=PhysicsRelease" />
+	  
     </if>
     <if test="${os == 'Unix'}">
       <exec program="xbuild" commandline="/t:Clean /p:Configuration=Release CocosSharp.Windows.sln" />
@@ -158,22 +160,28 @@
                 <echo message="Output directory: ${packages.dir.path}" />
                 <echo message="" />
 
-      <mkdir dir="${packages.dir.path}" />
+       <mkdir dir="${packages.dir.path}" />
 
-      <exec program="${nuget.cmd.dir.path} " commandline='pack "${nuspec.file.dir.path}CocosSharp.PCL.nuspec" -OutputDirectory "${packages.dir.path}"' />
-      <exec program="${nuget.cmd.dir.path} " commandline='pack "${nuspec.file.dir.path}CocosSharp.PCL.DX.nuspec" -OutputDirectory "${packages.dir.path}"' />
-      <exec program="${nuget.cmd.dir.path} " commandline='pack "${nuspec.file.dir.path}CocosSharp.PCL.GL.nuspec" -OutputDirectory "${packages.dir.path}"' />
-      <exec program="${nuget.cmd.dir.path} " commandline='pack "${nuspec.file.dir.path}CocosSharp.PCL.XNA.nuspec" -OutputDirectory "${packages.dir.path}"' />
+		<exec program="${nuget.cmd.dir.path} " commandline='pack "${nuspec.file.dir.path}CocosSharp.PCL.nuspec" -OutputDirectory "${packages.dir.path}"' />
+		<exec program="${nuget.cmd.dir.path} " commandline='pack "${nuspec.file.dir.path}CocosSharp.PCL.DX.nuspec" -OutputDirectory "${packages.dir.path}"' />
+		<exec program="${nuget.cmd.dir.path} " commandline='pack "${nuspec.file.dir.path}CocosSharp.PCL.GL.nuspec" -OutputDirectory "${packages.dir.path}"' />
+		<exec program="${nuget.cmd.dir.path} " commandline='pack "${nuspec.file.dir.path}CocosSharp.PCL.XNA.nuspec" -OutputDirectory "${packages.dir.path}"' />
+		<exec program="${nuget.cmd.dir.path} " commandline='pack "${nuspec.file.dir.path}CocosSharp.PhysicsWindows.nuspec" -OutputDirectory "${packages.dir.path}"' />
+		<exec program="${nuget.cmd.dir.path} " commandline='pack "${nuspec.file.dir.path}CocosSharp.PhysicsWindowsGL.nuspec" -OutputDirectory "${packages.dir.path}"' />
+		<exec program="${nuget.cmd.dir.path} " commandline='pack "${nuspec.file.dir.path}CocosSharp.PhysicsWindowsDX.nuspec" -OutputDirectory "${packages.dir.path}"' />
 
-      <exec program="${nuget.cmd.dir.path} " commandline='pack "${nuspec.file.dir.path}CocosSharp.Windows.nuspec" -OutputDirectory "${packages.dir.path}"' />
-      <exec program="${nuget.cmd.dir.path} " commandline='pack "${nuspec.file.dir.path}CocosSharp.WindowsGL.nuspec" -OutputDirectory "${packages.dir.path}"' />
-      <exec program="${nuget.cmd.dir.path} " commandline='pack "${nuspec.file.dir.path}CocosSharp.Windows8.nuspec" -OutputDirectory "${packages.dir.path}"' />
-      <exec program="${nuget.cmd.dir.path} " commandline='pack "${nuspec.file.dir.path}CocosSharp.WindowsPhone8.nuspec" -OutputDirectory "${packages.dir.path}"' />
-      <exec program="${nuget.cmd.dir.path} " commandline='pack "${nuspec.file.dir.path}CocosSharp.iOS.nuspec" -OutputDirectory "${packages.dir.path}"' />
-      <exec program="${nuget.cmd.dir.path} " commandline='pack "${nuspec.file.dir.path}CocosSharp.Android.nuspec" -OutputDirectory "${packages.dir.path}"' />
-      <exec program="${nuget.cmd.dir.path} " commandline='pack "${nuspec.file.dir.path}CocosSharp.Ouya.nuspec" -OutputDirectory "${packages.dir.path}"' />
-      <!--exec program="${nuget.cmd.dir.path} " commandline='pack "${nuspec.file.dir.path}Cocos2D.MGCB.nuspec" -OutputDirectory "${packages.dir.path}"' /-->
-      <exec program="${nuget.cmd.dir.path} " commandline='pack "${nuspec.file.dir.path}CocosSharp.WindowsDX.nuspec" -OutputDirectory "${packages.dir.path}"' />
+<!--
+		<exec program="${nuget.cmd.dir.path} " commandline='pack "${nuspec.file.dir.path}CocosSharp.Windows.nuspec" -OutputDirectory "${packages.dir.path}"' />
+		<exec program="${nuget.cmd.dir.path} " commandline='pack "${nuspec.file.dir.path}CocosSharp.WindowsGL.nuspec" -OutputDirectory "${packages.dir.path}"' />
+		<exec program="${nuget.cmd.dir.path} " commandline='pack "${nuspec.file.dir.path}CocosSharp.WindowsDX.nuspec" -OutputDirectory "${packages.dir.path}"' />
+		<exec program="${nuget.cmd.dir.path} " commandline='pack "${nuspec.file.dir.path}CocosSharp.Windows8.nuspec" -OutputDirectory "${packages.dir.path}"' />
+		<exec program="${nuget.cmd.dir.path} " commandline='pack "${nuspec.file.dir.path}CocosSharp.WindowsPhone8.nuspec" -OutputDirectory "${packages.dir.path}"' />
+		<exec program="${nuget.cmd.dir.path} " commandline='pack "${nuspec.file.dir.path}CocosSharp.iOS.nuspec" -OutputDirectory "${packages.dir.path}"' />
+		<exec program="${nuget.cmd.dir.path} " commandline='pack "${nuspec.file.dir.path}CocosSharp.Android.nuspec" -OutputDirectory "${packages.dir.path}"' />
+		<exec program="${nuget.cmd.dir.path} " commandline='pack "${nuspec.file.dir.path}CocosSharp.Ouya.nuspec" -OutputDirectory "${packages.dir.path}"' />
+		<exec program="${nuget.cmd.dir.path} " commandline='pack "${nuspec.file.dir.path}Cocos2D.MGCB.nuspec" -OutputDirectory "${packages.dir.path}"' />
+-->
+      
     </if>
     <if test="${os == 'MacOS'}">
 

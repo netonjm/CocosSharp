@@ -477,8 +477,8 @@ namespace CocosSharp
 
 		public override bool HitTest(CCPhysicsShape shapeA, CCPhysicsShape shapeB)
 		{
-			if ((shapeA.getBody() == _a && shapeB.getBody() == _b)
-	  || (shapeA.getBody() == _b && shapeB.getBody() == _a))
+			if ((shapeA.GetBody() == _a && shapeB.GetBody() == _b)
+	  || (shapeA.GetBody() == _b && shapeB.GetBody() == _a))
 			{
 				return true;
 			}
@@ -554,7 +554,7 @@ namespace CocosSharp
 
 		public override bool HitTest(CCPhysicsShape shapeA, CCPhysicsShape shapeB)
 		{
-			if (shapeA.getGroup() == _group || shapeB.getGroup() == _group)
+			if (shapeA.GetGroup() == _group || shapeB.GetGroup() == _group)
 			{
 				return true;
 			}

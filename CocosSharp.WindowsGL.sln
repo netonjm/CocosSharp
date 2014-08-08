@@ -1,5 +1,7 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30501.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lidgren.Network.Windows", "MonoGame\ThirdParty\Lidgren.Network\Lidgren.Network.Windows.csproj", "{AE483C29-042E-4226-BA52-D247CE7676DA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Framework.WindowsGL", "MonoGame\MonoGame.Framework\MonoGame.Framework.WindowsGL.csproj", "{6D75E618-19CA-4C51-9546-F10965FBC0B8}"
@@ -10,10 +12,16 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CocosSharp.WindowsGL", "src
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Framework.Net.WindowsGL", "MonoGame\MonoGame.Framework\MonoGame.Framework.Net.WindowsGL.csproj", "{6D6009F4-0AFB-4806-89D7-7945F20270F5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChipmunkSharp.Win32", "..\ChipmunkSharp\src\ChipmunkSharp\win32\ChipmunkSharp.Win32.csproj", "{FD50437F-B756-4BD8-99BE-B723F6E1EB45}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|x86 = Debug|x86
+		PhysicsDebug|Any CPU = PhysicsDebug|Any CPU
+		PhysicsDebug|x86 = PhysicsDebug|x86
+		PhysicsRelease|Any CPU = PhysicsRelease|Any CPU
+		PhysicsRelease|x86 = PhysicsRelease|x86
 		Release|Any CPU = Release|Any CPU
 		Release|x86 = Release|x86
 	EndGlobalSection
@@ -21,18 +29,36 @@ Global
 		{AE483C29-042E-4226-BA52-D247CE7676DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{AE483C29-042E-4226-BA52-D247CE7676DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AE483C29-042E-4226-BA52-D247CE7676DA}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{AE483C29-042E-4226-BA52-D247CE7676DA}.PhysicsDebug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AE483C29-042E-4226-BA52-D247CE7676DA}.PhysicsDebug|Any CPU.Build.0 = Debug|Any CPU
+		{AE483C29-042E-4226-BA52-D247CE7676DA}.PhysicsDebug|x86.ActiveCfg = Debug|Any CPU
+		{AE483C29-042E-4226-BA52-D247CE7676DA}.PhysicsRelease|Any CPU.ActiveCfg = Release|Any CPU
+		{AE483C29-042E-4226-BA52-D247CE7676DA}.PhysicsRelease|Any CPU.Build.0 = Release|Any CPU
+		{AE483C29-042E-4226-BA52-D247CE7676DA}.PhysicsRelease|x86.ActiveCfg = Release|Any CPU
 		{AE483C29-042E-4226-BA52-D247CE7676DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AE483C29-042E-4226-BA52-D247CE7676DA}.Release|Any CPU.Build.0 = Release|Any CPU
 		{AE483C29-042E-4226-BA52-D247CE7676DA}.Release|x86.ActiveCfg = Release|Any CPU
 		{6D75E618-19CA-4C51-9546-F10965FBC0B8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6D75E618-19CA-4C51-9546-F10965FBC0B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6D75E618-19CA-4C51-9546-F10965FBC0B8}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{6D75E618-19CA-4C51-9546-F10965FBC0B8}.PhysicsDebug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6D75E618-19CA-4C51-9546-F10965FBC0B8}.PhysicsDebug|Any CPU.Build.0 = Debug|Any CPU
+		{6D75E618-19CA-4C51-9546-F10965FBC0B8}.PhysicsDebug|x86.ActiveCfg = Debug|Any CPU
+		{6D75E618-19CA-4C51-9546-F10965FBC0B8}.PhysicsRelease|Any CPU.ActiveCfg = Release|Any CPU
+		{6D75E618-19CA-4C51-9546-F10965FBC0B8}.PhysicsRelease|Any CPU.Build.0 = Release|Any CPU
+		{6D75E618-19CA-4C51-9546-F10965FBC0B8}.PhysicsRelease|x86.ActiveCfg = Release|Any CPU
 		{6D75E618-19CA-4C51-9546-F10965FBC0B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6D75E618-19CA-4C51-9546-F10965FBC0B8}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6D75E618-19CA-4C51-9546-F10965FBC0B8}.Release|x86.ActiveCfg = Release|Any CPU
 		{B81B6701-7A78-4846-BF6F-04E0591F0F38}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B81B6701-7A78-4846-BF6F-04E0591F0F38}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B81B6701-7A78-4846-BF6F-04E0591F0F38}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{B81B6701-7A78-4846-BF6F-04E0591F0F38}.PhysicsDebug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B81B6701-7A78-4846-BF6F-04E0591F0F38}.PhysicsDebug|Any CPU.Build.0 = Debug|Any CPU
+		{B81B6701-7A78-4846-BF6F-04E0591F0F38}.PhysicsDebug|x86.ActiveCfg = Debug|Any CPU
+		{B81B6701-7A78-4846-BF6F-04E0591F0F38}.PhysicsRelease|Any CPU.ActiveCfg = Release|Any CPU
+		{B81B6701-7A78-4846-BF6F-04E0591F0F38}.PhysicsRelease|Any CPU.Build.0 = Release|Any CPU
+		{B81B6701-7A78-4846-BF6F-04E0591F0F38}.PhysicsRelease|x86.ActiveCfg = Release|Any CPU
 		{B81B6701-7A78-4846-BF6F-04E0591F0F38}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B81B6701-7A78-4846-BF6F-04E0591F0F38}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B81B6701-7A78-4846-BF6F-04E0591F0F38}.Release|x86.ActiveCfg = Release|Any CPU
@@ -40,6 +66,14 @@ Global
 		{0C0AFDFF-A4E4-49F4-B6DB-A761B0DB64A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0C0AFDFF-A4E4-49F4-B6DB-A761B0DB64A8}.Debug|x86.ActiveCfg = Debug|x86
 		{0C0AFDFF-A4E4-49F4-B6DB-A761B0DB64A8}.Debug|x86.Build.0 = Debug|x86
+		{0C0AFDFF-A4E4-49F4-B6DB-A761B0DB64A8}.PhysicsDebug|Any CPU.ActiveCfg = PhysicsDebug|Any CPU
+		{0C0AFDFF-A4E4-49F4-B6DB-A761B0DB64A8}.PhysicsDebug|Any CPU.Build.0 = PhysicsDebug|Any CPU
+		{0C0AFDFF-A4E4-49F4-B6DB-A761B0DB64A8}.PhysicsDebug|x86.ActiveCfg = Debug|x86
+		{0C0AFDFF-A4E4-49F4-B6DB-A761B0DB64A8}.PhysicsDebug|x86.Build.0 = Debug|x86
+		{0C0AFDFF-A4E4-49F4-B6DB-A761B0DB64A8}.PhysicsRelease|Any CPU.ActiveCfg = PhysicsRelease|Any CPU
+		{0C0AFDFF-A4E4-49F4-B6DB-A761B0DB64A8}.PhysicsRelease|Any CPU.Build.0 = PhysicsRelease|Any CPU
+		{0C0AFDFF-A4E4-49F4-B6DB-A761B0DB64A8}.PhysicsRelease|x86.ActiveCfg = PhysicsRelease|x86
+		{0C0AFDFF-A4E4-49F4-B6DB-A761B0DB64A8}.PhysicsRelease|x86.Build.0 = PhysicsRelease|x86
 		{0C0AFDFF-A4E4-49F4-B6DB-A761B0DB64A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0C0AFDFF-A4E4-49F4-B6DB-A761B0DB64A8}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0C0AFDFF-A4E4-49F4-B6DB-A761B0DB64A8}.Release|x86.ActiveCfg = Release|x86
@@ -47,9 +81,27 @@ Global
 		{6D6009F4-0AFB-4806-89D7-7945F20270F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6D6009F4-0AFB-4806-89D7-7945F20270F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6D6009F4-0AFB-4806-89D7-7945F20270F5}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{6D6009F4-0AFB-4806-89D7-7945F20270F5}.PhysicsDebug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6D6009F4-0AFB-4806-89D7-7945F20270F5}.PhysicsDebug|Any CPU.Build.0 = Debug|Any CPU
+		{6D6009F4-0AFB-4806-89D7-7945F20270F5}.PhysicsDebug|x86.ActiveCfg = Debug|Any CPU
+		{6D6009F4-0AFB-4806-89D7-7945F20270F5}.PhysicsRelease|Any CPU.ActiveCfg = Release|Any CPU
+		{6D6009F4-0AFB-4806-89D7-7945F20270F5}.PhysicsRelease|Any CPU.Build.0 = Release|Any CPU
+		{6D6009F4-0AFB-4806-89D7-7945F20270F5}.PhysicsRelease|x86.ActiveCfg = PhysicsRelease|Any CPU
 		{6D6009F4-0AFB-4806-89D7-7945F20270F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6D6009F4-0AFB-4806-89D7-7945F20270F5}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6D6009F4-0AFB-4806-89D7-7945F20270F5}.Release|x86.ActiveCfg = Release|Any CPU
+		{FD50437F-B756-4BD8-99BE-B723F6E1EB45}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FD50437F-B756-4BD8-99BE-B723F6E1EB45}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FD50437F-B756-4BD8-99BE-B723F6E1EB45}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{FD50437F-B756-4BD8-99BE-B723F6E1EB45}.PhysicsDebug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FD50437F-B756-4BD8-99BE-B723F6E1EB45}.PhysicsDebug|Any CPU.Build.0 = Debug|Any CPU
+		{FD50437F-B756-4BD8-99BE-B723F6E1EB45}.PhysicsDebug|x86.ActiveCfg = Debug|Any CPU
+		{FD50437F-B756-4BD8-99BE-B723F6E1EB45}.PhysicsRelease|Any CPU.ActiveCfg = Release|Any CPU
+		{FD50437F-B756-4BD8-99BE-B723F6E1EB45}.PhysicsRelease|Any CPU.Build.0 = Release|Any CPU
+		{FD50437F-B756-4BD8-99BE-B723F6E1EB45}.PhysicsRelease|x86.ActiveCfg = Release|Any CPU
+		{FD50437F-B756-4BD8-99BE-B723F6E1EB45}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FD50437F-B756-4BD8-99BE-B723F6E1EB45}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FD50437F-B756-4BD8-99BE-B723F6E1EB45}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

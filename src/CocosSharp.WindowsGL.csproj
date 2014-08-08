@@ -35,17 +35,17 @@
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\WindowsGL\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;WINDOWSGL;OPENGL;MONOGAME</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;WINDOWSGL;OPENGL;MONOGAME;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\WindowsGL\Release\</OutputPath>
@@ -54,6 +54,46 @@
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'PhysicsDebug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\PhysicsWindowsGL\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;WINDOWSGL;OPENGL;MONOGAME;USE_PHYSICS</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'PhysicsDebug|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\PhysicsWindowsGL\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;WINDOWSGL;OPENGL;MONOGAME;USE_PHYSICS</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'PhysicsRelease|x86'">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\PhysicsWindowsGL\Release\</OutputPath>
+    <DefineConstants>TRACE;WINDOWSGL;OPENGL;MONOGAME;USE_PHYSICS</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'PhysicsRelease|AnyCPU'">
+    <OutputPath>bin\PhysicsWindowsGL\Release\</OutputPath>
+    <DefineConstants>TRACE;WINDOWSGL;OPENGL;MONOGAME;USE_PHYSICS</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="ICSharpCode.SharpZipLib">
@@ -95,6 +135,19 @@
     <Compile Include="events\CCEventGamePadConnection.cs" />
     <Compile Include="events\CCEventCustom.cs" />
     <Compile Include="events\CCEventListenerCustom.cs" />
+    <Compile Include="physics\CCPhysicsBody.cs" />
+    <Compile Include="physics\CCPhysicsContact.cs" />
+    <Compile Include="physics\CCPhysicsJoint.cs" />
+    <Compile Include="physics\CCPhysicsShape.cs" />
+    <Compile Include="physics\CCPhysicsWorld.cs" />
+    <Compile Include="physics\chipmunk\CCPhysicsBodyInfo.cs" />
+    <Compile Include="physics\chipmunk\CCPhysicsContactInfo.cs" />
+    <Compile Include="physics\chipmunk\CCPhysicsJointInfo.cs" />
+    <Compile Include="physics\chipmunk\CCPhysicsShapeInfo.cs" />
+    <Compile Include="physics\chipmunk\CCPhysicsWorldInfo.cs" />
+    <Compile Include="physics\chipmunk\PhysicsHelper.cs" />
+    <Compile Include="physics\extensions\CCPhysicsDebugNode .cs" />
+    <Compile Include="physics\extensions\cpExtension.cs" />
     <Compile Include="sprite_nodes\CCMaskedSprite.cs" />
     <Compile Include="actions\action\CCAction.cs" />
     <Compile Include="actions\action\CCFiniteTimeAction.cs" />
@@ -387,6 +440,10 @@
     <Compile Include="script_support\ICCScriptingEngine.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\ChipmunkSharp\src\ChipmunkSharp\win32\ChipmunkSharp.Win32.csproj">
+      <Project>{fd50437f-b756-4bd8-99be-b723f6e1eb45}</Project>
+      <Name>ChipmunkSharp.Win32</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MonoGame\MonoGame.Framework\MonoGame.Framework.Net.WindowsGL.csproj">
       <Project>{6d6009f4-0afb-4806-89d7-7945f20270f5}</Project>
       <Name>MonoGame.Framework.Net.WindowsGL</Name>
