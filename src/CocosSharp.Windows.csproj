@@ -456,10 +456,6 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\ChipmunkSharp\src\ChipmunkSharp\win32\ChipmunkSharp.Win32.csproj">
-      <Project>{fd50437f-b756-4bd8-99be-b723f6e1eb45}</Project>
-      <Name>ChipmunkSharp.Win32</Name>
-    </ProjectReference>
     <ProjectReference Include="..\box2d\box2d.csproj">
       <Project>{B81B6701-7A78-4846-BF6F-04E0591F0F38}</Project>
       <Name>box2d</Name>

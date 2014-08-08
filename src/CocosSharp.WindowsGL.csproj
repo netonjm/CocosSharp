@@ -440,10 +440,6 @@
     <Compile Include="script_support\ICCScriptingEngine.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\ChipmunkSharp\src\ChipmunkSharp\win32\ChipmunkSharp.Win32.csproj">
-      <Project>{fd50437f-b756-4bd8-99be-b723f6e1eb45}</Project>
-      <Name>ChipmunkSharp.Win32</Name>
-    </ProjectReference>
     <ProjectReference Include="..\MonoGame\MonoGame.Framework\MonoGame.Framework.Net.WindowsGL.csproj">
       <Project>{6d6009f4-0afb-4806-89d7-7945f20270f5}</Project>
       <Name>MonoGame.Framework.Net.WindowsGL</Name>

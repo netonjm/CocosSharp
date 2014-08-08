@@ -447,10 +447,6 @@
     <Compile Include="script_support\ICCScriptingEngine.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\ChipmunkSharp\src\ChipmunkSharp\win32\ChipmunkSharp.Win32.csproj">
-      <Project>{fd50437f-b756-4bd8-99be-b723f6e1eb45}</Project>
-      <Name>ChipmunkSharp.Win32</Name>
-    </ProjectReference>
     <ProjectReference Include="..\MonoGame\MonoGame.Framework\MonoGame.Framework.Net.Windows.csproj">
       <Project>{87a71215-7cac-4b80-9d43-1700decfb828}</Project>
       <Name>MonoGame.Framework.Net.Windows</Name>
